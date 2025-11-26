@@ -14,7 +14,6 @@
             choices.passwordEnter();
             string staffPassword = Console.ReadLine();
             bankservice.CreateStaff(staffUsername, staffPassword);
-            choices.staffSuccess();
         }
 
         public void staffAccountLogin()
@@ -37,7 +36,7 @@
         public void HolderAccountCreate()
         {
             choices.createHolder();
-            choices.usernameEnter();
+            choices.BankEntry();
             string HolderBankname = Console.ReadLine().ToUpper();
             choices.usernameEnter();
             string HolderUsername = Console.ReadLine();
@@ -103,7 +102,7 @@
                     default:
                         choices.validEnter();
                         break;
-
+                        
                 }
             }
         }

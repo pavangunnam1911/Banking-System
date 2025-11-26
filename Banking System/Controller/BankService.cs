@@ -35,13 +35,17 @@
                 return;
             }
 
-            Account account = new Account();
-            account.BankName = bank;
-            account.Username = username;
-            account.Password = password;
-            account.AccountId = username.Substring(0, 3).ToUpper() + DateTime.Now.ToString("yyyyMMdd");
-            AccountHolders.Add(username, account);
-            choices.holderSuccess();
+            else 
+            {
+                Account account = new Account();
+                account.BankName = bank;
+                account.Username = username;
+                account.Password = password;
+                account.AccountId = username.Substring(0, 3).ToUpper() + DateTime.Now.ToString("yyyyMMdd");
+                AccountHolders.Add(username, account);
+                choices.holderSuccess();
+            }
+
         }
 
         public bool ValidateAccountHolder(string username, string password)
@@ -163,7 +167,7 @@
 
             AddTransaction(s, r, amt, "Transfer");
 
-            Console.WriteLine($"Transfer Successful! Charge = ₹{charge}");
+            Console.WriteLine($"Transfer Successful! Charge = Rs.{charge}");
 
         }
 
