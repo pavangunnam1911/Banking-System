@@ -1,4 +1,6 @@
-﻿namespace Bank
+﻿using System;
+
+namespace Banks
 {
     public class Transaction
     {
@@ -7,5 +9,14 @@
         public string Receiver { get; set; }
         public decimal Amount { get; set; }
         public string Type { get; set; }
+
+        public Transaction(string bankId, string accountId, string sender, string receiver, decimal amount, string type)
+        {
+            TransactionId = "TXN" + bankId + accountId + DateTime.Now.ToString("ddMMyyyy");
+            Sender = sender;
+            Receiver = receiver;
+            Amount = amount;
+            Type = type;
+        }
     }
 }
