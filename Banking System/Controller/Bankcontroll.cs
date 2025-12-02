@@ -214,7 +214,9 @@ namespace Banking_System.Controller
 
                     case "5":
                         {
-                            bankservice.ShowAllTransactions();
+                            Console.WriteLine("Enter user details to view transactions");
+                            string name = Console.ReadLine();
+                            bankservice.ViewUserTransactions(name);
                             break;
                         }
 
