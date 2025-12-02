@@ -74,5 +74,8 @@ namespace Banks
         public void startBank() => cs.EnterBankName.Write();
         public void BankCountry() => cs.EnterBankCountry.Write();
         public void addressAdd() => cs.EnterBankAddress.Write();
+
+        public void RTGSotherAdd() => cs.EnterRTGSother.Write();
+        public void IMPSSotherAdd() => cs.EnterIMPSother.Write();
     }
 }

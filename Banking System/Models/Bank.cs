@@ -7,16 +7,20 @@ namespace Banks
         public string BankId { get; set; } 
         public string BankCountry { get; set; }
         public string BankAddress {  get; set; }
+        public string BankRTGSother { get; set; }
+        public string BankIMPSother { get; set; }
         public Dictionary<string, Account> AccountHolders { get; set; }
         public Dictionary<string, string> Staff { get; set; }
         public Dictionary<string, decimal> CurrencyRates { get; set; }
 
-        public Bank(string bankName, string bankCountry,string bankAddress)
+        public Bank(string bankName, string bankCountry,string bankAddress,string RTGSother,string IMPSother)
         {
             BankName = bankName;
             BankId = bankName.Substring(0, 3).ToUpper() + DateTime.Now.ToString("ddMMyyyy");
             BankCountry = bankCountry;
             BankAddress = bankAddress;
+            BankRTGSother= RTGSother;
+            BankIMPSother= IMPSother;
 
             AccountHolders = new Dictionary<string, Account>();
             Staff = new Dictionary<string, string>();

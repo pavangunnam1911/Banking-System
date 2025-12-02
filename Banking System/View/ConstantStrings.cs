@@ -26,6 +26,8 @@
         public string EnterBankName = "Please Enter your Bank Name";
         public string EnterBankCountry = "Please Enter the Bank's Country Name";
         public string EnterBankAddress = "Please Enter the Bank's Address";
+        public string EnterRTGSother = "Please Enter RTGS rates for tranfering amount to different bank";
+        public string EnterIMPSother = "Please Enter IMPS rates for tranfering amount to different bank";
 
 
         public string WelcomeChoices1 = "1. Create a new Bank";

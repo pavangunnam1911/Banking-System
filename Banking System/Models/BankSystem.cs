@@ -51,8 +51,12 @@ public class BankSystem
         string country = Console.ReadLine();
         choices.addressAdd();
         string address = Console.ReadLine();
+        choices.RTGSotherAdd();
+        string RTGSother = Console.ReadLine();
+        choices.IMPSSotherAdd();
+        string IMPSother = Console.ReadLine();
 
-        Bank newBank = new Bank(name, country, address);
+        Bank newBank = new Bank(name, country, address,RTGSother,IMPSother);
         AllBanks.Add(newBank.BankId, newBank);
 
         Console.WriteLine($"Bank Created: {newBank.BankName} ({newBank.BankId})");
