@@ -1,5 +1,6 @@
 ﻿namespace Banking_System.View
-{
+{   
+
     public class ConstantStrings
     {
 

@@ -1,4 +1,5 @@
-﻿using Banks;
+﻿using Banking_System.Models;
+using Banks;
 
 namespace Banking_System.Controller
 {
@@ -14,16 +15,22 @@ namespace Banking_System.Controller
             bankservice = new BankService(bank);
         }
 
-
         public void staffAccountCreate()
         {
-            choices.createStaff();
-            choices.usernameEnter();
-            string staffUsername = Console.ReadLine();
-            choices.passwordEnter();
-            string staffPassword = Console.ReadLine();
-            bankservice.CreateStaff(staffUsername, staffPassword);
-            StaffActions(staffUsername);
+            try
+            {
+                choices.createStaff();
+                choices.usernameEnter();
+                string staffUsername = InputCheck.ReadString("");
+                choices.passwordEnter();
+                string staffPassword = InputCheck.ReadString("");
+                bankservice.CreateStaff(staffUsername, staffPassword);
+                StaffActions(staffUsername);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public void staffAccountLogin()
@@ -32,18 +39,14 @@ namespace Banking_System.Controller
             {
                 choices.loginStaff();
                 choices.usernameEnter();
-                string staffUsername = Console.ReadLine();
+                string staffUsername = InputCheck.ReadString("");
                 choices.passwordEnter();
-                string staffPassword = Console.ReadLine();
+                string staffPassword = InputCheck.ReadString("");
 
                 if (bankservice.ValidateStaff(staffUsername, staffPassword))
-                {
                     StaffActions(staffUsername);
-                }
                 else
-                {
                     choices.invalidCredentials();
-                }
             }
             catch (Exception ex)
             {
@@ -53,13 +56,20 @@ namespace Banking_System.Controller
 
         public void HolderAccountCreate()
         {
-            choices.createHolder();
-            string HolderBankname = bank.BankName;
-            choices.usernameEnter();
-            string HolderUsername = Console.ReadLine();
-            choices.passwordEnter();
-            string HolderPassword = Console.ReadLine();
-            bankservice.CreateAccountHolder(HolderBankname, HolderUsername, HolderPassword);
+            try
+            {
+                choices.createHolder();
+                string HolderBankname = bank.BankName;
+                choices.usernameEnter();
+                string HolderUsername = InputCheck.ReadString("");
+                choices.passwordEnter();
+                string HolderPassword = InputCheck.ReadString("");
+                bankservice.CreateAccountHolder(HolderBankname, HolderUsername, HolderPassword);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public void HolderAccountLogin()
@@ -68,18 +78,14 @@ namespace Banking_System.Controller
             {
                 choices.loginHolder();
                 choices.usernameEnter();
-                string HolderUsername = Console.ReadLine();
+                string HolderUsername = InputCheck.ReadString("");
                 choices.passwordEnter();
-                string HolderPassword = Console.ReadLine();
+                string HolderPassword = InputCheck.ReadString("");
 
                 if (bankservice.ValidateAccountHolder(HolderUsername, HolderPassword))
-                {
                     HolderActions(HolderUsername);
-                }
                 else
-                {
                     choices.invalidCredentials();
-                }
             }
             catch (Exception ex)
             {
@@ -89,34 +95,38 @@ namespace Banking_System.Controller
 
         public void optionChooseStaff()
         {
-            choices.loginChoice();
-            string Accountchoice = Console.ReadLine();
-
-            if (int.TryParse(Accountchoice, out int choice))
+            try
             {
-                switch (choice)
+                choices.loginChoice();
+                string Accountchoice = Console.ReadLine();
+
+                if (int.TryParse(Accountchoice, out int choice))
                 {
-                    case 1:
-                        {
+                    switch (choice)
+                    {
+                        case 1:
                             staffAccountCreate();
                             break;
-                        }
 
-                    case 2:
-                        {
+                        case 2:
                             staffAccountLogin();
                             break;
-                        }
 
-                    default:
-                        {
+                        default:
                             choices.validEnter();
                             break;
-                        }
+                    }
+                }
+                else
+                {
+                    choices.validEnter();
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
-
 
         public void DisplayUserChoice()
         {
@@ -124,42 +134,42 @@ namespace Banking_System.Controller
 
             do
             {
-                choices.WelcomeChoice();
-                string roleChoose = Console.ReadLine();
-
-                if (int.TryParse(roleChoose, out int choice))
+                try
                 {
-                    switch (choice)
+                    choices.WelcomeChoice();
+                    string roleChoose = Console.ReadLine();
+
+                    if (int.TryParse(roleChoose, out int choice))
                     {
-                        case 1:
-                            {
+                        switch (choice)
+                        {
+                            case 1:
                                 optionChooseStaff();
                                 break;
-                            }
 
-                        case 2:
-                            {
+                            case 2:
                                 HolderAccountLogin();
                                 break;
-                            }
 
-                        default:
-                            {
+                            default:
                                 choices.validEnter();
                                 break;
-                            }
+                        }
+                    }
+                    else
+                    {
+                        choices.chooseCorrect();
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    choices.chooseCorrect();
+                    Console.WriteLine(ex.Message);
                 }
 
                 choices.returnMainmenu();
                 mainOption = Console.ReadLine().ToUpper();
 
-            }
-            while (mainOption == "Y");
+            } while (mainOption == "Y");
         }
 
         public void StaffActions(string username)
@@ -168,83 +178,64 @@ namespace Banking_System.Controller
 
             do
             {
-                choices.staffChoice();
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
+                try
                 {
-                    case "1":
-                        {
+                    choices.staffChoice();
+                    string choice = Console.ReadLine();
+
+                    switch (choice)
+                    {
+                        case "1":
                             HolderAccountCreate();
                             break;
-                        }
 
-                    case "2":
-                        {
+                        case "2":
                             choices.usernameUpdate();
                             bankservice.UpdateAccount(Console.ReadLine());
                             break;
-                        }
 
-                    case "3":
-                        {
+                        case "3":
                             choices.usernameDelete();
                             bankservice.DeleteAccount(Console.ReadLine());
                             break;
-                        }
 
-                    case "4":
-                        {
+                        case "4":
                             choices.currencyCodeEnter();
                             string currencycode = Console.ReadLine().ToUpper();
-
-                            try
-                            {
-                                choices.AmountEnter();
-                                decimal rate = Convert.ToDecimal(Console.ReadLine());
-                                bankservice.AddCurrency(currencycode, rate);
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Invalid rate value.");
-                            }
+                            choices.AmountEnter();
+                            decimal rate = InputCheck.ReadDecimal("");
+                            bankservice.AddCurrency(currencycode, rate);
                             break;
-                        }
 
-                    case "5":
-                        {
-                            Console.WriteLine("Enter user details to view transactions");
+                        case "5":
+                            Console.WriteLine("Enter user details");
                             string name = Console.ReadLine();
                             bankservice.ViewUserTransactions(name);
                             break;
-                        }
 
-                    case "6":
-                        {
+                        case "6":
                             choices.TransactionIDEnter();
                             bankservice.RevertTransaction(Console.ReadLine());
                             break;
-                        }
 
-                    case "7":
-                        {
+                        case "7":
                             bankservice.UpdateServiceCharge();
                             break;
-                        }
 
-                    default:
-                        {
+                        default:
                             choices.validEnter();
                             break;
-                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
 
                 choices.Continue();
                 option = Console.ReadLine().ToUpper();
 
-            }
-            while (option == "Y");
+            } while (option == "Y");
         }
 
         public void HolderActions(string username)
@@ -253,87 +244,57 @@ namespace Banking_System.Controller
 
             do
             {
-                choices.holderChoice();
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
+                try
                 {
-                    case "1":
-                        {
+                    choices.holderChoice();
+                    string choice = Console.ReadLine();
+
+                    switch (choice)
+                    {
+                        case "1":
                             choices.currencyCodeEnter();
                             string currency = Console.ReadLine();
-
-                            try
-                            {
-                                choices.AmountEnter();
-                                decimal amount = Convert.ToDecimal(Console.ReadLine());
-                                bankservice.Deposit(username, currency, amount);
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Invalid amount");
-                            }
+                            choices.AmountEnter();
+                            decimal amount = InputCheck.ReadDecimal("");
+                            bankservice.Deposit(username, currency, amount);
                             break;
-                        }
 
-                    case "2":
-                        {
-                            try
-                            {
-                                choices.AmountEnter();
-                                decimal amt = Convert.ToDecimal(Console.ReadLine());
-                                bankservice.Withdraw(username, amt);
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Invalid amount");
-                            }
+                        case "2":
+                            choices.AmountEnter();
+                            decimal amt = InputCheck.ReadDecimal("");
+                            bankservice.Withdraw(username, amt);
                             break;
-                        }
 
-                    case "3":
-                        {
+                        case "3":
                             choices.receiverUsernameEnter();
                             string rec = Console.ReadLine();
-
-                            try
-                            {
-                                choices.AmountEnter();
-                                decimal transferAmt = Convert.ToDecimal(Console.ReadLine());
-                                bankservice.Transfer(username, rec, transferAmt);
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Invalid amount");
-                            }
+                            choices.AmountEnter();
+                            decimal transferAmt = InputCheck.ReadDecimal("");
+                            bankservice.Transfer(username, rec, transferAmt);
                             break;
-                        }
 
-                    case "4":
-                        {
+                        case "4":
                             bankservice.ViewUserTransactions(username);
                             break;
-                        }
 
-                    case "5":
-                        {
+                        case "5":
                             bankservice.ViewBalance(username);
                             break;
-                        }
 
-                    default:
-                        {
+                        default:
                             choices.validEnter();
                             break;
-                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
 
                 choices.Continue();
                 option = Console.ReadLine().ToUpper();
 
-            }
-            while (option == "Y");
+            } while (option == "Y");
         }
     }
 }

@@ -1,10 +1,14 @@
 ﻿using Banking_System.View;
 
 namespace Banks
-{
+{   
     public class DisplayChoices
+
     {
+
         ConstantStrings cs = new ConstantStrings();
+
+        
 
         public void WelcomeBank()
         {
