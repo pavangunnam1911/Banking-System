@@ -1,6 +1,4 @@
-﻿using System;
-using Banking_System.Controller;
-using Banks;
+﻿using Banks;
 
 namespace Banking_System.Controller
 {
@@ -14,33 +12,6 @@ namespace Banking_System.Controller
         {
             this.bank = bank;
             bankservice = new BankService(bank);
-        }
-
-        public void BankCreate()
-        {
-            choices.startBank();
-            string bankName = Console.ReadLine();
-            choices.BankCountry();
-            string bankCountry = Console.ReadLine();
-            bankservice.createBank(bankName,bankCountry);
-            DisplayUserChoice();
-        }
-
-        public void chooseBank()
-        {
-            Console.WriteLine("Please Enter Your BankName");
-            string bankName = Console.ReadLine();
-
-            bool bankExists = bankservice.chooseBank(bankName);
-
-            if (bankExists)
-            {
-                DisplayUserChoice();
-            }
-            else
-            {
-                Console.WriteLine("Returning to main menu...");
-            }
         }
 
 
@@ -146,50 +117,6 @@ namespace Banking_System.Controller
             }
         }
 
-        public void BankChoice()
-        {
-            string mainOption;
-
-            do
-            {
-                choices.WelcomeBank();
-
-                string roleChoose = Console.ReadLine();
-
-                if (int.TryParse(roleChoose, out int choice))
-                {
-                    switch (choice)
-                    {
-                        case 1:
-                            {
-                                BankCreate();
-                                break;
-                            }
-
-                        case 2:
-                            {
-                                chooseBank();
-                                break;
-                            }
-
-                        default:
-                            {
-                                choices.validEnter();
-                                break;
-                            }
-                    }
-                }
-                else
-                {
-                    choices.chooseCorrect();
-                }
-
-                choices.returnMainmenu();
-                mainOption = Console.ReadLine().ToUpper();
-
-            }
-            while (mainOption == "Y");
-        }
 
         public void DisplayUserChoice()
         {

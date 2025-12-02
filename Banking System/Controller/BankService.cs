@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
-using Banks;
+﻿using Banks;
 
 namespace Banking_System.Controller
 {
     public class BankService
     {
-        private Bank bank;
+        private readonly Bank bank;
         DisplayChoices choices = new DisplayChoices();
         
 
@@ -18,44 +16,6 @@ namespace Banking_System.Controller
         public BankService(Bank bank)
         {
             this.bank = bank;
-        }
-
-        public void createBank(string bankName,string bankCountry)
-        {
-            bankName = bankName.ToUpper();
-            bankCountry = bankCountry.ToUpper();
-
-            bool exists = bank.IndividualBank.Values.Any(b => b.ToUpper() == bankName);
-
-            if (exists)
-            {
-                Console.WriteLine("Bank Already Exists");
-            }
-            else
-            {
-                string bankId = bankName.Substring(0, 3).ToUpper() + DateTime.Now.ToString("ddMMyyyy");
-
-                bank.IndividualBank.Add(bankId, bankName);
-                bank.IndividualBank.Add(bankName, bankCountry);
-            }
-        }
-
-        public bool chooseBank(string bankName)
-        {
-            bankName = bankName.ToUpper();
-
-            bool exists = bank.IndividualBank.Values.Any(b => b.ToUpper() == bankName);
-
-            if (exists)
-            {
-                Console.WriteLine($"Welcome to {bankName} bank");
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("Bank Doesn't Exist");
-                return false;
-            }
         }
 
 
@@ -114,58 +74,39 @@ namespace Banking_System.Controller
             }
         }
 
-        public void UpdateAccount(string username)
-        {
-            username = username.ToLower();
+public void UpdateAccount(string username)
+{
+    username = username.ToLower();
 
-            if (!bank.AccountHolders.ContainsKey(username))
-            {
-                Console.WriteLine("User not found");
-                return;
-            }
+    if (!bank.AccountHolders.ContainsKey(username))
+    {
+        Console.WriteLine("User not found");
+        return;
+    }
 
-            Console.WriteLine("1. Update Username");
-            Console.WriteLine("2. Update Password");
 
-            string choice = Console.ReadLine();
+    Console.WriteLine("Enter new username:");
+    string newUsername = Console.ReadLine().ToLower();
 
-            switch (choice)
-            {
-                case "1":
-                {
-                    Console.WriteLine("Enter new username:");
-                    string newUsername = Console.ReadLine().ToLower();
+    if (bank.AccountHolders.ContainsKey(newUsername))
+    {
+        Console.WriteLine("Username already exists. Cannot update.");
+        return;
+    }
 
-                    if (bank.AccountHolders.ContainsKey(newUsername))
-                    {
-                        Console.WriteLine("Username already exists");
-                    }
-                    else
-                    {
-                        Account acc = bank.AccountHolders[username];
-                        bank.AccountHolders.Remove(username);
-                        acc.Username = newUsername;
-                        bank.AccountHolders.Add(newUsername, acc);
-                        Console.WriteLine("Username updated successfully");
-                    }
-                    break;
-                }
+    Console.WriteLine("Enter new password:");
+    string newPassword = Console.ReadLine();
 
-                case "2":
-                {
-                    Console.WriteLine("Enter new password:");
-                    bank.AccountHolders[username].Password = Console.ReadLine();
-                    Console.WriteLine("Password updated successfully");
-                    break;
-                }
 
-                default:
-                {
-                    Console.WriteLine("Please enter a valid choice");
-                    break;
-                }
-            }
-        }
+    Account acc = bank.AccountHolders[username];
+    bank.AccountHolders.Remove(username); 
+    acc.Username = newUsername;
+    acc.Password = newPassword;            
+    bank.AccountHolders.Add(newUsername, acc); 
+
+    Console.WriteLine("Username and password updated successfully");
+}
+
 
         public void DeleteAccount(string username)
         {
