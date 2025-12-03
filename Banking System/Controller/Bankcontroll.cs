@@ -8,11 +8,13 @@ namespace Banking_System.Controller
         DisplayChoices choices = new DisplayChoices();
         BankService bankservice;
         Bank bank;
+        Dictionary<string, Bank> allBanks;
 
-        public BankUsers(Bank bank)
+        public BankUsers(Bank bank, Dictionary<string, Bank> allBanks)
         {
             this.bank = bank;
-            bankservice = new BankService(bank);
+            this.allBanks = allBanks;
+            bankservice = new BankService(bank, allBanks);
         }
 
         public void staffAccountCreate()
@@ -99,7 +101,6 @@ namespace Banking_System.Controller
             {
                 choices.loginChoice();
                 string Accountchoice = Console.ReadLine();
-
                 if (int.TryParse(Accountchoice, out int choice))
                 {
                     switch (choice)
@@ -107,11 +108,9 @@ namespace Banking_System.Controller
                         case 1:
                             staffAccountCreate();
                             break;
-
                         case 2:
                             staffAccountLogin();
                             break;
-
                         default:
                             choices.validEnter();
                             break;
@@ -131,14 +130,12 @@ namespace Banking_System.Controller
         public void DisplayUserChoice()
         {
             string mainOption;
-
             do
             {
                 try
                 {
                     choices.WelcomeChoice();
                     string roleChoose = Console.ReadLine();
-
                     if (int.TryParse(roleChoose, out int choice))
                     {
                         switch (choice)
@@ -146,11 +143,9 @@ namespace Banking_System.Controller
                             case 1:
                                 optionChooseStaff();
                                 break;
-
                             case 2:
                                 HolderAccountLogin();
                                 break;
-
                             default:
                                 choices.validEnter();
                                 break;
@@ -165,40 +160,33 @@ namespace Banking_System.Controller
                 {
                     Console.WriteLine(ex.Message);
                 }
-
                 choices.returnMainmenu();
                 mainOption = Console.ReadLine().ToUpper();
-
             } while (mainOption == "Y");
         }
 
         public void StaffActions(string username)
         {
             string option;
-
             do
             {
                 try
                 {
                     choices.staffChoice();
                     string choice = Console.ReadLine();
-
                     switch (choice)
                     {
                         case "1":
                             HolderAccountCreate();
                             break;
-
                         case "2":
                             choices.usernameUpdate();
                             bankservice.UpdateAccount(Console.ReadLine());
                             break;
-
                         case "3":
                             choices.usernameDelete();
                             bankservice.DeleteAccount(Console.ReadLine());
                             break;
-
                         case "4":
                             choices.currencyCodeEnter();
                             string currencycode = Console.ReadLine().ToUpper();
@@ -206,22 +194,18 @@ namespace Banking_System.Controller
                             decimal rate = InputCheck.ReadDecimal("");
                             bankservice.AddCurrency(currencycode, rate);
                             break;
-
                         case "5":
                             Console.WriteLine("Enter user details");
                             string name = Console.ReadLine();
                             bankservice.ViewUserTransactions(name);
                             break;
-
                         case "6":
                             choices.TransactionIDEnter();
                             bankservice.RevertTransaction(Console.ReadLine());
                             break;
-
                         case "7":
                             bankservice.UpdateServiceCharge();
                             break;
-
                         default:
                             choices.validEnter();
                             break;
@@ -231,24 +215,20 @@ namespace Banking_System.Controller
                 {
                     Console.WriteLine(ex.Message);
                 }
-
                 choices.Continue();
                 option = Console.ReadLine().ToUpper();
-
             } while (option == "Y");
         }
 
         public void HolderActions(string username)
         {
             string option;
-
             do
             {
                 try
                 {
                     choices.holderChoice();
                     string choice = Console.ReadLine();
-
                     switch (choice)
                     {
                         case "1":
@@ -258,13 +238,11 @@ namespace Banking_System.Controller
                             decimal amount = InputCheck.ReadDecimal("");
                             bankservice.Deposit(username, currency, amount);
                             break;
-
                         case "2":
                             choices.AmountEnter();
                             decimal amt = InputCheck.ReadDecimal("");
                             bankservice.Withdraw(username, amt);
                             break;
-
                         case "3":
                             choices.receiverUsernameEnter();
                             string rec = Console.ReadLine();
@@ -272,15 +250,12 @@ namespace Banking_System.Controller
                             decimal transferAmt = InputCheck.ReadDecimal("");
                             bankservice.Transfer(username, rec, transferAmt);
                             break;
-
                         case "4":
                             bankservice.ViewUserTransactions(username);
                             break;
-
                         case "5":
                             bankservice.ViewBalance(username);
                             break;
-
                         default:
                             choices.validEnter();
                             break;
@@ -290,10 +265,8 @@ namespace Banking_System.Controller
                 {
                     Console.WriteLine(ex.Message);
                 }
-
                 choices.Continue();
                 option = Console.ReadLine().ToUpper();
-
             } while (option == "Y");
         }
     }

@@ -9,28 +9,23 @@ public class BankSystem
     public void Start()
     {
         string option;
-
         do
         {
             try
             {
                 choices.WelcomeBank();
                 string choice = Console.ReadLine();
-
                 switch (choice)
                 {
                     case "1":
                         CreateNewBank();
                         break;
-
                     case "2":
                         ChooseBank();
                         break;
-
                     case "3":
                         ShowBanks();
                         break;
-
                     default:
                         Console.WriteLine("Invalid choice.");
                         break;
@@ -40,10 +35,8 @@ public class BankSystem
             {
                 Console.WriteLine(ex.Message);
             }
-
             Console.WriteLine("Return to Menu? (Y/N)");
             option = Console.ReadLine().ToUpper();
-
         } while (option == "Y");
     }
 
@@ -52,22 +45,27 @@ public class BankSystem
         try
         {
             choices.BankEntry();
-            string name = InputCheck.ReadString("");
+            string name = InputCheck.ReadString();
+
             choices.BankCountry();
-            string country = InputCheck.ReadString("");
+            string country = InputCheck.ReadString();
+
             choices.addressAdd();
-            string address = InputCheck.ReadString("");
+            string address = InputCheck.ReadString();
+
             choices.RTGSotherAdd();
-            string RTGSother = InputCheck.ReadString("");
+            string RTGSother = InputCheck.ReadString();
+
             choices.IMPSSotherAdd();
-            string IMPSother = InputCheck.ReadString("");
+            string IMPSother = InputCheck.ReadString();
+
 
             Bank newBank = new Bank(name, country, address, RTGSother, IMPSother);
             AllBanks.Add(newBank.BankId, newBank);
 
             Console.WriteLine($"Bank Created: {newBank.BankName} ({newBank.BankId})");
 
-            BankUsers users = new BankUsers(newBank);
+            BankUsers users = new BankUsers(newBank, AllBanks);
             users.DisplayUserChoice();
         }
         catch (Exception ex)
@@ -82,11 +80,10 @@ public class BankSystem
         {
             Console.WriteLine("Enter Bank ID:");
             string id = InputCheck.ReadString("");
-
             if (AllBanks.ContainsKey(id))
             {
                 Console.WriteLine($"Selected: {AllBanks[id].BankName}");
-                BankUsers users = new BankUsers(AllBanks[id]);
+                BankUsers users = new BankUsers(AllBanks[id], AllBanks);
                 users.DisplayUserChoice();
             }
             else
@@ -107,7 +104,6 @@ public class BankSystem
             if (AllBanks.Values.Any())
             {
                 Console.WriteLine("Available Banks:");
-
                 foreach (var b in AllBanks.Values)
                     Console.WriteLine($"{b.BankId} - {b.BankName} ({b.BankCountry})");
             }

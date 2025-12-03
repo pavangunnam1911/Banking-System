@@ -15,7 +15,7 @@ namespace Banks
         public Dictionary<string, string> Staff { get; set; }
         public Dictionary<string, decimal> CurrencyRates { get; set; }
 
-        public Bank(string bankName, string bankCountry,string bankAddress,string RTGSother,string IMPSother)
+        public Bank(string bankName, string bankCountry,string bankAddress,string RTGSother,string IMPSother,int RTGSsame =0,int IMPSsame=5)
         {
             BankName = bankName;
             BankId = bankName.Substring(0, 3).ToUpper() + DateTime.Now.ToString("ddMMyyyy");
@@ -23,8 +23,8 @@ namespace Banks
             BankAddress = bankAddress;
             otherBankRTGS = decimal.Parse(RTGSother);
             otherBankIMPS = decimal.Parse(IMPSother);
-            sameBankRTGS = 0;
-            sameBankIMPS = 5;
+            sameBankRTGS = RTGSsame;
+            sameBankIMPS = IMPSsame;
 
             AccountHolders = new Dictionary<string, Account>();
             Staff = new Dictionary<string, string>();

@@ -1,6 +1,6 @@
 ﻿public static class InputCheck
 {
-    public static decimal ReadDecimal(string message)
+    public static decimal ReadDecimal(string message = "")
     {
         while (true)
         {
@@ -14,7 +14,7 @@
         }
     }
 
-    public static string ReadString(string message)
+    public static string ReadString(string message = "")
     {
         while (true)
         {
@@ -24,7 +24,6 @@
             {
                 return input;
             }
-                
             Console.WriteLine("Input cannot be empty.");
         }
     }
