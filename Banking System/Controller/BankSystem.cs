@@ -1,10 +1,14 @@
 ﻿using Banks;
 using Banking_System.Controller;
+using Banking_System.View;
 
 public class BankSystem
 {
     private Dictionary<string, Bank> AllBanks = new Dictionary<string, Bank>();
+
     DisplayChoices choices = new DisplayChoices();
+
+    ConstantStrings cs = new ConstantStrings();
 
     public void Start()
     {
@@ -27,7 +31,7 @@ public class BankSystem
                         ShowBanks();
                         break;
                     default:
-                        Console.WriteLine("Invalid choice.");
+                        cs.ValidChoice.Write();
                         break;
                 }
             }
@@ -35,7 +39,7 @@ public class BankSystem
             {
                 Console.WriteLine(ex.Message);
             }
-            Console.WriteLine("Return to Menu? (Y/N)");
+            cs.ContinueMainMenu.Write();
             option = Console.ReadLine().ToUpper();
         } while (option == "Y");
     }
@@ -44,19 +48,19 @@ public class BankSystem
     {
         try
         {
-            choices.BankEntry();
+            cs.EnterBankName.Write();
             string name = InputCheck.ReadString();
 
-            choices.BankCountry();
+            cs.EnterBankCountry.Write();
             string country = InputCheck.ReadString();
 
-            choices.addressAdd();
+            cs.EnterBankAddress.Write();
             string address = InputCheck.ReadString();
 
-            choices.RTGSotherAdd();
+            cs.EnterRTGSother.Write();
             string RTGSother = InputCheck.ReadString();
 
-            choices.IMPSSotherAdd();
+            cs.EnterIMPSother.Write();
             string IMPSother = InputCheck.ReadString();
 
 
@@ -78,7 +82,7 @@ public class BankSystem
     {
         try
         {
-            Console.WriteLine("Enter Bank ID:");
+            cs.EnterBankId.Write();
             string id = InputCheck.ReadString("");
             if (AllBanks.ContainsKey(id))
             {
@@ -88,7 +92,7 @@ public class BankSystem
             }
             else
             {
-                Console.WriteLine("Bank not found.");
+                cs.BanknotFound.Write();
             }
         }
         catch (Exception ex)
@@ -103,13 +107,13 @@ public class BankSystem
         {
             if (AllBanks.Values.Any())
             {
-                Console.WriteLine("Available Banks:");
+                cs.BanksAvailable.Write();
                 foreach (var b in AllBanks.Values)
                     Console.WriteLine($"{b.BankId} - {b.BankName} ({b.BankCountry})");
             }
             else
             {
-                Console.WriteLine("No Data Found");
+                cs.NoBankData.Write();
             }
         }
         catch (Exception ex)

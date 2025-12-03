@@ -5,10 +5,7 @@ namespace Banks
     public class DisplayChoices
 
     {
-
         ConstantStrings cs = new ConstantStrings();
-
-        
 
         public void WelcomeBank()
         {
@@ -53,33 +50,21 @@ namespace Banks
             cs.LoginChoice2.Write();
         }
 
-        public void chooseCorrect() => cs.ChooseCorrect.Write();
-        public void usernameEnter() => cs.EnterUsername.Write();
-        public void passwordEnter() => cs.EnterPassword.Write();
-        public void validEnter() => cs.ValidChoice.Write();
-        public void invalidCredentials() => cs.InvalidCredentials.Write();
-        public void staffSuccess() => cs.StaffSuccess.Write();
-        public void holderSuccess() => cs.HolderSuccess.Write();
-        public void createStaff() => cs.CreateStaff.Write();
-        public void loginStaff() => cs.LoginStaff.Write();
-        public void createHolder() => cs.CreateHolder.Write();
-        public void loginHolder() => cs.LoginHolder.Write();
-        public void usernameUpdate() => cs.UsernameUpdate.Write();
-        public void usernameDelete() => cs.UsernameDelete.Write();
-        public void BankEntry() => cs.EnterBankName.Write();
-        public void returnMainmenu() => cs.ReturnUserMenu.Write();
-        public void returnBankMainmenu() => cs.ReturnBankMenu.Write();
-        public void currencyCodeEnter() => cs.EnterCurrencyCode.Write();
-        public void AmountEnter() => cs.EnterAmount.Write();
-        public void ExchangeRateEnter() => cs.EnterExchangeRate.Write();
-        public void TransactionIDEnter() => cs.EnterTransactionID.Write();
-        public void Continue() => cs.ContinueMainMenu.Write();
-        public void receiverUsernameEnter() => cs.EnterReceiverUsername.Write();
-        public void startBank() => cs.EnterBankName.Write();
-        public void BankCountry() => cs.EnterBankCountry.Write();
-        public void addressAdd() => cs.EnterBankAddress.Write();
+        public void chargesChoice()
+        {
+            cs.chargeschoice.Write();
+            cs.sameIMPS.Write();
+            cs.sameRTGS.Write();
+            cs.otherIMPS.Write();
+            cs.otherRTGS.Write();
+        }
 
-        public void RTGSotherAdd() => cs.EnterRTGSother.Write();
-        public void IMPSSotherAdd() => cs.EnterIMPSother.Write();
+        public void chargesTypes()
+        {
+            cs.UserTypeHeader.Write();
+            cs.IMPS.Write();
+            cs.RTGS.Write();
+        }
+
     }
 }

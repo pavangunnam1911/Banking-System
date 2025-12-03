@@ -1,11 +1,15 @@
-﻿using Banks;
+﻿using Banking_System.View;
+using Banks;
 
 namespace Banking_System.Models
 {
     public class BankService
     {
         private readonly Bank bank;
+
         private readonly Dictionary<string, Bank> allBanks;
+
+        ConstantStrings cs = new ConstantStrings();
 
         DisplayChoices choices = new DisplayChoices();
 
@@ -19,10 +23,10 @@ namespace Banking_System.Models
             OtherBankIMPS = bank.otherBankIMPS;
         }
 
-        decimal SameBankRTGS = 0;
-        decimal SameBankIMPS = 5;
-        decimal OtherBankRTGS = 2;
-        decimal OtherBankIMPS = 6;
+        decimal SameBankRTGS ;
+        decimal SameBankIMPS ;
+        decimal OtherBankRTGS;
+        decimal OtherBankIMPS;
 
         public void CreateStaff(string username, string password)
         {
@@ -30,11 +34,11 @@ namespace Banking_System.Models
             {
                 if (bank.Staff.ContainsKey(username))
                 {
-                    Console.WriteLine("Staff already exists");
+                    cs.Staffexist.Write();
                     return;
                 }
                 bank.Staff.Add(username, password);
-                choices.staffSuccess();
+                cs.StaffSuccess.Write();
             }
             catch (Exception ex)
             {
@@ -61,12 +65,12 @@ namespace Banking_System.Models
                 username = username.ToLower();
                 if (bank.AccountHolders.ContainsKey(username))
                 {
-                    Console.WriteLine("Account Holder Already Exists");
+                    cs.Holderexist.Write();
                     return;
                 }
                 Account account = new Account(bankName, username, password);
                 bank.AccountHolders.Add(username, account);
-                choices.holderSuccess();
+                cs.HolderSuccess.Write();
             }
             catch (Exception ex)
             {
@@ -94,13 +98,13 @@ namespace Banking_System.Models
                 username = username.ToLower();
                 if (!bank.AccountHolders.ContainsKey(username))
                 {
-                    Console.WriteLine("User not found");
+                    cs.Usernotfound.Write();
                     return;
                 }
                 string newUsername = InputCheck.ReadString("Enter new username: ").ToLower();
                 if (bank.AccountHolders.ContainsKey(newUsername))
                 {
-                    Console.WriteLine("Username already exists.");
+                    cs.UsernameExist.Write();
                     return;
                 }
                 string newPassword = InputCheck.ReadString("Enter new password: ");
@@ -109,7 +113,7 @@ namespace Banking_System.Models
                 account.Username = newUsername;
                 account.Password = newPassword;
                 bank.AccountHolders.Add(newUsername, account);
-                Console.WriteLine("Updated successfully");
+                cs.UpdateSuccess.Write();
             }
             catch (Exception ex)
             {
@@ -124,11 +128,11 @@ namespace Banking_System.Models
                 if (bank.AccountHolders.ContainsKey(username))
                 {
                     bank.AccountHolders.Remove(username);
-                    Console.WriteLine("Successfully deleted");
+                    cs.DeleteSuccess.Write();
                 }
                 else
                 {
-                    Console.WriteLine("User not found");
+                    cs.Usernotfound.Write();
                 }
             }
             catch (Exception ex)
@@ -144,11 +148,11 @@ namespace Banking_System.Models
                 code = code.ToUpper();
                 if (bank.CurrencyRates.ContainsKey(code))
                 {
-                    Console.WriteLine("Currency Already Exists");
+                    cs.CurrencyExist.Write();
                     return;
                 }
                 bank.CurrencyRates.Add(code, rate);
-                Console.WriteLine("Added");
+                cs.CurrencyAdded.Write();
             }
             catch (Exception ex)
             {
@@ -158,11 +162,7 @@ namespace Banking_System.Models
 
         public void UpdateServiceCharge()
         {
-            Console.WriteLine("1. Same Bank IMPS");
-            Console.WriteLine("2. Same Bank RTGS");
-            Console.WriteLine("3. Other Bank IMPS");
-            Console.WriteLine("4. Other Bank RTGS");
-
+            choices.chargesChoice();
             string choice = Console.ReadLine();
             switch (choice)
             {
@@ -183,10 +183,10 @@ namespace Banking_System.Models
                     bank.otherBankRTGS = OtherBankRTGS;
                     break;
                 default:
-                    Console.WriteLine("Invalid");
+                    cs.ValidChoice.Write();
                     return;
             }
-            Console.WriteLine("Updated Successfully");
+            cs.UpdateSuccess.Write();
         }
 
         public void Deposit(string username, string currency, decimal amount)
@@ -196,18 +196,18 @@ namespace Banking_System.Models
                 currency = currency.ToUpper();
                 if (!bank.AccountHolders.TryGetValue(username, out var acc))
                 {
-                    Console.WriteLine("User not found");
+                    cs.Usernotfound.Write();
                     return;
                 }
                 if (!bank.CurrencyRates.TryGetValue(currency, out decimal rate))
                 {
-                    Console.WriteLine("Currency not accepted");
+                    cs.Currencynotaccept.Write();
                     return;
                 }
                 decimal inr = amount * rate;
                 acc.Balance += inr;
                 AddTransaction(username, "Bank", inr, "Deposit");
-                Console.WriteLine("Deposited");
+                cs.Deposited.Write();
             }
             catch (Exception ex)
             {
@@ -221,17 +221,17 @@ namespace Banking_System.Models
             {
                 if (!bank.AccountHolders.TryGetValue(username, out var acc))
                 {
-                    Console.WriteLine("User not found");
+                    cs.Usernotfound.Write();
                     return;
                 }
                 if (acc.Balance < amount)
                 {
-                    Console.WriteLine("Insufficient Funds");
+                    cs.InsufficientFunds.Write();
                     return;
                 }
                 acc.Balance -= amount;
                 AddTransaction(username, "Bank", amount, "Withdraw");
-                Console.WriteLine("Withdraw Successful");
+                cs.WithdrawSuccess.Write();
             }
             catch (Exception ex)
             {
@@ -245,7 +245,7 @@ namespace Banking_System.Models
             {
                 if (!bank.AccountHolders.TryGetValue(s, out var sender))
                 {
-                    Console.WriteLine("Sender not found");
+                    cs.Sendernotfound.Write();
                     return;
                 }
 
@@ -264,11 +264,11 @@ namespace Banking_System.Models
 
                 if (receiver == null)
                 {
-                    Console.WriteLine("Receiver not found");
+                    cs.Receivernotfound.Write();
                     return;
                 }
 
-                Console.WriteLine("1. IMPS\n2. RTGS");
+                choices.chargesTypes();
                 string type = Console.ReadLine();
 
                 decimal charge = 0;
@@ -288,7 +288,7 @@ namespace Banking_System.Models
 
                 if (sender.Balance < total)
                 {
-                    Console.WriteLine("Insufficient");
+                    cs.InsufficientFunds.Write();
                     return;
                 }
 
@@ -296,7 +296,7 @@ namespace Banking_System.Models
                 receiver.Balance += total;
 
                 AddTransaction(s, r, total, "Transfer");
-                Console.WriteLine("Transfer Successful");
+                cs.TransferSuccess.Write();
             }
             catch (Exception ex)
             {
@@ -331,12 +331,12 @@ namespace Banking_System.Models
             {
                 if (!bank.AccountHolders.TryGetValue(username, out var account))
                 {
-                    Console.WriteLine("User not found");
+                    cs.Usernotfound.Write();
                     return;
                 }
                 if (!account.Transactions.Any())
                 {
-                    Console.WriteLine("No transactions");
+                    cs.Transactionsnotfound.Write();
                     return;
                 }
                 foreach (var t in account.Transactions)
@@ -376,13 +376,13 @@ namespace Banking_System.Models
 
                 if (found == null)
                 {
-                    Console.WriteLine("Transaction not found");
+                    cs.Transactionsnotfound.Write();
                     return;
                 }
 
                 if (found.Type != "Transfer")
                 {
-                    Console.WriteLine("Only transfer transactions can be reverted.");
+                    cs.Transfertransactionrevert.Write();
                     return;
                 }
 
@@ -398,14 +398,14 @@ namespace Banking_System.Models
 
                 if (sender == null || receiver == null)
                 {
-                    Console.WriteLine("User not found");
+                    cs.Usernotfound.Write();
                     return;
                 }
 
                 sender.Balance += found.Amount;
                 receiver.Balance -= found.Amount;
 
-                Console.WriteLine("Reverted");
+                cs.RevertedTransaction.Write();
             }
             catch (Exception ex)
             {
@@ -421,7 +421,7 @@ namespace Banking_System.Models
                 if (bank.AccountHolders.ContainsKey(username))
                     Console.WriteLine($"Balance: {bank.AccountHolders[username].Balance}");
                 else
-                    Console.WriteLine("User not found");
+                    cs.Usernotfound.Write();
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using Banking_System.Models;
+using Banking_System.View;
 using Banks;
 
 namespace Banking_System.Controller
@@ -6,6 +7,7 @@ namespace Banking_System.Controller
     public class BankUsers
     {
         DisplayChoices choices = new DisplayChoices();
+        ConstantStrings cs = new ConstantStrings();
         BankService bankservice;
         Bank bank;
         Dictionary<string, Bank> allBanks;
@@ -21,10 +23,10 @@ namespace Banking_System.Controller
         {
             try
             {
-                choices.createStaff();
-                choices.usernameEnter();
+                cs.CreateStaff.Write();
+                cs.EnterUsername.Write();
                 string staffUsername = InputCheck.ReadString("");
-                choices.passwordEnter();
+                cs.EnterPassword.Write();
                 string staffPassword = InputCheck.ReadString("");
                 bankservice.CreateStaff(staffUsername, staffPassword);
                 StaffActions(staffUsername);
@@ -39,16 +41,16 @@ namespace Banking_System.Controller
         {
             try
             {
-                choices.loginStaff();
-                choices.usernameEnter();
+                cs.LoginStaff.Write();
+                cs.EnterUsername.Write();
                 string staffUsername = InputCheck.ReadString("");
-                choices.passwordEnter();
+                cs.EnterPassword.Write();
                 string staffPassword = InputCheck.ReadString("");
 
                 if (bankservice.ValidateStaff(staffUsername, staffPassword))
                     StaffActions(staffUsername);
                 else
-                    choices.invalidCredentials();
+                    cs.InvalidCredentials.Write();
             }
             catch (Exception ex)
             {
@@ -60,11 +62,11 @@ namespace Banking_System.Controller
         {
             try
             {
-                choices.createHolder();
+                cs.CreateHolder.Write();
                 string HolderBankname = bank.BankName;
-                choices.usernameEnter();
+                cs.EnterUsername.Write();
                 string HolderUsername = InputCheck.ReadString("");
-                choices.passwordEnter();
+                cs.EnterPassword.Write();
                 string HolderPassword = InputCheck.ReadString("");
                 bankservice.CreateAccountHolder(HolderBankname, HolderUsername, HolderPassword);
             }
@@ -78,16 +80,16 @@ namespace Banking_System.Controller
         {
             try
             {
-                choices.loginHolder();
-                choices.usernameEnter();
-                string HolderUsername = InputCheck.ReadString("");
-                choices.passwordEnter();
-                string HolderPassword = InputCheck.ReadString("");
+                cs.LoginHolder.Write();
+                cs.EnterUsername.Write();
+                string HolderUsername = InputCheck.ReadString();
+                cs.EnterPassword.Write();
+                string HolderPassword = InputCheck.ReadString();
 
                 if (bankservice.ValidateAccountHolder(HolderUsername, HolderPassword))
                     HolderActions(HolderUsername);
                 else
-                    choices.invalidCredentials();
+                    cs.InvalidCredentials.Write();
             }
             catch (Exception ex)
             {
@@ -112,13 +114,13 @@ namespace Banking_System.Controller
                             staffAccountLogin();
                             break;
                         default:
-                            choices.validEnter();
+                            cs.ValidChoice.Write();
                             break;
                     }
                 }
                 else
                 {
-                    choices.validEnter();
+                    cs.ValidChoice.Write();
                 }
             }
             catch (Exception ex)
@@ -147,20 +149,20 @@ namespace Banking_System.Controller
                                 HolderAccountLogin();
                                 break;
                             default:
-                                choices.validEnter();
+                                cs.ValidChoice.Write();
                                 break;
                         }
                     }
                     else
                     {
-                        choices.chooseCorrect();
+                        cs.ChooseCorrect.Write();
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-                choices.returnMainmenu();
+                cs.ReturnUserMenu.Write();
                 mainOption = Console.ReadLine().ToUpper();
             } while (mainOption == "Y");
         }
@@ -180,17 +182,17 @@ namespace Banking_System.Controller
                             HolderAccountCreate();
                             break;
                         case "2":
-                            choices.usernameUpdate();
+                            cs.UsernameUpdate.Write();
                             bankservice.UpdateAccount(Console.ReadLine());
                             break;
                         case "3":
-                            choices.usernameDelete();
+                            cs.UsernameDelete.Write();
                             bankservice.DeleteAccount(Console.ReadLine());
                             break;
                         case "4":
-                            choices.currencyCodeEnter();
+                            cs.EnterCurrencyCode.Write();
                             string currencycode = Console.ReadLine().ToUpper();
-                            choices.AmountEnter();
+                            cs.EnterAmount.Write();
                             decimal rate = InputCheck.ReadDecimal("");
                             bankservice.AddCurrency(currencycode, rate);
                             break;
@@ -200,14 +202,14 @@ namespace Banking_System.Controller
                             bankservice.ViewUserTransactions(name);
                             break;
                         case "6":
-                            choices.TransactionIDEnter();
+                            cs.EnterTransactionID.Write();
                             bankservice.RevertTransaction(Console.ReadLine());
                             break;
                         case "7":
                             bankservice.UpdateServiceCharge();
                             break;
                         default:
-                            choices.validEnter();
+                            cs.ValidChoice.Write();
                             break;
                     }
                 }
@@ -215,7 +217,7 @@ namespace Banking_System.Controller
                 {
                     Console.WriteLine(ex.Message);
                 }
-                choices.Continue();
+                cs.ContinueMainMenu.Write();
                 option = Console.ReadLine().ToUpper();
             } while (option == "Y");
         }
@@ -232,21 +234,21 @@ namespace Banking_System.Controller
                     switch (choice)
                     {
                         case "1":
-                            choices.currencyCodeEnter();
+                            cs.EnterCurrencyCode.Write();
                             string currency = Console.ReadLine();
-                            choices.AmountEnter();
+                            cs.EnterAmount.Write();
                             decimal amount = InputCheck.ReadDecimal("");
                             bankservice.Deposit(username, currency, amount);
                             break;
                         case "2":
-                            choices.AmountEnter();
+                            cs.EnterAmount.Write();
                             decimal amt = InputCheck.ReadDecimal("");
                             bankservice.Withdraw(username, amt);
                             break;
                         case "3":
-                            choices.receiverUsernameEnter();
+                            cs.EnterReceiverUsername.Write();
                             string rec = Console.ReadLine();
-                            choices.AmountEnter();
+                            cs.EnterAmount.Write();
                             decimal transferAmt = InputCheck.ReadDecimal("");
                             bankservice.Transfer(username, rec, transferAmt);
                             break;
@@ -257,7 +259,7 @@ namespace Banking_System.Controller
                             bankservice.ViewBalance(username);
                             break;
                         default:
-                            choices.validEnter();
+                            cs.ValidChoice.Write();
                             break;
                     }
                 }
@@ -265,7 +267,7 @@ namespace Banking_System.Controller
                 {
                     Console.WriteLine(ex.Message);
                 }
-                choices.Continue();
+                cs.ContinueMainMenu.Write();
                 option = Console.ReadLine().ToUpper();
             } while (option == "Y");
         }
