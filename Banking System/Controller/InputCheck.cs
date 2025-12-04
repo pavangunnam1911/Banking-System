@@ -1,4 +1,4 @@
-﻿public static class InputCheck
+﻿public class InputCheck
 {
     public static decimal ReadDecimal(string message = "")
     {

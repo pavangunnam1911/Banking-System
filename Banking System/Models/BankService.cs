@@ -13,6 +13,11 @@ namespace Banking_System.Models
 
         DisplayChoices choices = new DisplayChoices();
 
+        decimal SameBankRTGS;
+        decimal SameBankIMPS;
+        decimal OtherBankRTGS;
+        decimal OtherBankIMPS;
+
         public BankService(Bank bank, Dictionary<string, Bank> allBanks)
         {
             this.bank = bank;
@@ -23,10 +28,6 @@ namespace Banking_System.Models
             OtherBankIMPS = bank.otherBankIMPS;
         }
 
-        decimal SameBankRTGS ;
-        decimal SameBankIMPS ;
-        decimal OtherBankRTGS;
-        decimal OtherBankIMPS;
 
         public void CreateStaff(string username, string password)
         {
@@ -308,21 +309,31 @@ namespace Banking_System.Models
         {
             try
             {
-                string bankId = bank.AccountHolders[sender].BankID;
-                string accountId = bank.AccountHolders[sender].AccountId;
+                string senderBankId = bank.AccountHolders[sender].BankID;
+                string senderAccountId = bank.AccountHolders[sender].AccountId;
 
-                Transaction t = new Transaction(bankId, accountId, sender, receiver, amount, type);
+                Transaction senderTxn = new Transaction(senderBankId, senderAccountId, sender, receiver, amount, type);
 
                 if (bank.AccountHolders.ContainsKey(sender))
-                    bank.AccountHolders[sender].Transactions.Add(t);
+                    bank.AccountHolders[sender].Transactions.Add(senderTxn);
 
                 foreach (var b in allBanks.Values)
                 {
                     if (b.AccountHolders.ContainsKey(receiver))
-                        b.AccountHolders[receiver].Transactions.Add(t);
+                    {
+                        string receiverBankId = b.AccountHolders[receiver].BankID;
+                        string receiverAccountId = b.AccountHolders[receiver].AccountId;
+
+                        Transaction receiverTxn = new Transaction(receiverBankId, receiverAccountId, sender, receiver, amount, type);
+
+                        b.AccountHolders[receiver].Transactions.Add(receiverTxn);
+                    }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public void ViewUserTransactions(string username)
@@ -358,15 +369,15 @@ namespace Banking_System.Models
                 Bank senderBank = null;
                 Bank receiverBank = null;
 
-                foreach (var b in allBanks.Values)
+                foreach (var bank in allBanks.Values)
                 {
-                    foreach (var acc in b.AccountHolders.Values)
+                    foreach (var account in bank.AccountHolders.Values)
                     {
-                        found = acc.Transactions.FirstOrDefault(x => x.TransactionId == txn);
+                        found = account.Transactions.FirstOrDefault(x => x.TransactionId == txn);
                         if (found != null)
                         {
-                            senderBank = b;
-                            sender = b.AccountHolders[found.Sender];
+                            senderBank = bank;
+                            sender = bank.AccountHolders[found.Sender];
                             break;
                         }
                     }
@@ -386,12 +397,12 @@ namespace Banking_System.Models
                     return;
                 }
 
-                foreach (var b in allBanks.Values)
+                foreach (var bank in allBanks.Values)
                 {
-                    if (b.AccountHolders.ContainsKey(found.Receiver))
+                    if (bank.AccountHolders.ContainsKey(found.Receiver))
                     {
-                        receiverBank = b;
-                        receiver = b.AccountHolders[found.Receiver];
+                        receiverBank = bank;
+                        receiver = bank.AccountHolders[found.Receiver];
                         break;
                     }
                 }
@@ -413,6 +424,29 @@ namespace Banking_System.Models
             }
         }
 
+        public void ViewAllTransactions()
+        {
+            try
+            {
+                bool found = false;
+
+                foreach (var acc in bank.AccountHolders.Values)
+                {
+                    foreach (var t in acc.Transactions)
+                    {
+                        Console.WriteLine($"{t.TransactionId} {t.Sender} {t.Receiver} {t.Type} {t.Amount}");
+                        found = true;
+                    }
+                }
+
+                if (!found)
+                    Console.WriteLine("No transactions found.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
 
         public void ViewBalance(string username)
         {
