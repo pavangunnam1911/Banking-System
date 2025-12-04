@@ -4,7 +4,7 @@ namespace Banks
     public class Bank
     {
         public string BankName { get; set; }
-        public string BankId { get; set; } 
+        public string BankId { get; init; } 
         public string BankCountry { get; set; }
         public string BankAddress {  get; set; }
         public decimal otherBankRTGS { get; set; }

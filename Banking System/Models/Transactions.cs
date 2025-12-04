@@ -2,7 +2,7 @@
 {
     public class Transaction
     {
-        public string TransactionId { get; set; }
+        public string TransactionId { get; init; }
         public string Sender { get; set; }
         public string Receiver { get; set; }
         public decimal Amount { get; set; }

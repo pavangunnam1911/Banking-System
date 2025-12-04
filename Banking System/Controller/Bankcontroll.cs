@@ -47,10 +47,16 @@ namespace Banking_System.Controller
                 cs.EnterPassword.Write();
                 string staffPassword = InputCheck.ReadString("");
 
-                if (bankservice.ValidateStaff(staffUsername, staffPassword))
+                if (bankservice.ValidateStaff(staffUsername, staffPassword)) 
+                {
                     StaffActions(staffUsername);
+                }
+                    
                 else
+                {
                     cs.InvalidCredentials.Write();
+                }
+                    
             }
             catch (Exception ex)
             {
@@ -82,14 +88,20 @@ namespace Banking_System.Controller
             {
                 cs.LoginHolder.Write();
                 cs.EnterUsername.Write();
-                string HolderUsername = InputCheck.ReadString();
+                string HolderUsername = InputCheck.ReadString("");
                 cs.EnterPassword.Write();
-                string HolderPassword = InputCheck.ReadString();
+                string HolderPassword = InputCheck.ReadString("");
 
                 if (bankservice.ValidateAccountHolder(HolderUsername, HolderPassword))
+                {
                     HolderActions(HolderUsername);
+                }
+                    
                 else
+                {
                     cs.InvalidCredentials.Write();
+                }
+                    
             }
             catch (Exception ex)
             {

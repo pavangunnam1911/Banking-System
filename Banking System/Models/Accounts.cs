@@ -7,7 +7,7 @@ namespace Banks
         public string BankID { get; set; } 
         public string Username { get; set; }
         public string Password { get; set; }
-        public string AccountId { get; set; }
+        public string AccountId { get; init; }
         public decimal Balance { get; set; }
         public List<Transaction> Transactions { get; set; }
 

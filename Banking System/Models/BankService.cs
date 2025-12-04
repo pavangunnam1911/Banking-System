@@ -1,6 +1,5 @@
 ﻿using Banking_System.View;
 using Banks;
-
 namespace Banking_System.Models
 {
     public class BankService
@@ -275,10 +274,22 @@ namespace Banking_System.Models
                 decimal charge = 0;
                 bool sameBank = sender.BankName == receiver.BankName;
 
-                if (sameBank && type == "1") charge = SameBankIMPS;
-                else if (sameBank && type == "2") charge = SameBankRTGS;
-                else if (!sameBank && type == "1") charge = OtherBankIMPS;
-                else if (!sameBank && type == "2") charge = OtherBankRTGS;
+                if (sameBank && type == "1")
+                {
+                    charge = SameBankIMPS;
+                }
+                else if (sameBank && type == "2")
+                {
+                    charge = SameBankRTGS;
+                }
+                else if (!sameBank && type == "1")
+                {
+                    charge = OtherBankIMPS;
+                }
+                else if (!sameBank && type == "2")
+                { 
+                    charge = OtherBankRTGS; 
+                }
                 else
                 {
                     Console.WriteLine("Invalid type");
@@ -315,7 +326,9 @@ namespace Banking_System.Models
                 Transaction senderTxn = new Transaction(senderBankId, senderAccountId, sender, receiver, amount, type);
 
                 if (bank.AccountHolders.ContainsKey(sender))
+                {
                     bank.AccountHolders[sender].Transactions.Add(senderTxn);
+                }
 
                 foreach (var b in allBanks.Values)
                 {
@@ -351,7 +364,10 @@ namespace Banking_System.Models
                     return;
                 }
                 foreach (var t in account.Transactions)
+                {
                     Console.WriteLine($"{t.TransactionId} {t.Type} {t.Amount}");
+                }
+                    
             }
             catch (Exception ex)
             {
@@ -382,7 +398,10 @@ namespace Banking_System.Models
                         }
                     }
                     if (found != null)
+                    {
                         break;
+                    }
+                        
                 }
 
                 if (found == null)
@@ -440,7 +459,10 @@ namespace Banking_System.Models
                 }
 
                 if (!found)
+                {
                     Console.WriteLine("No transactions found.");
+                }
+                    
             }
             catch (Exception ex)
             {
