@@ -1,0 +1,39 @@
+﻿Analysis Report
+1)Create a new bank.
+2)people in bank:-manager,staff,account holder.
+3)bank users:-
+a)Staff can
+•	Create new account for holder
+•	Account should have:-username ,password
+•	Can update,delete  holder account 
+•	Add new accepted currency with exchange rate
+•	Amount transfer service charges.
+•	Service charges can be modified which are preset by bank.
+•	Access to account transaction history.
+•	Revert transactions
+b)Holder can
+•	Deposit Money.(Any currency to INR)
+•	Withdraw Money.(INR)
+•	Transfer Money.(INR)
+•	Transactions(Self).
+Patterns:-
+1.	Bank ID-first 3 letters of bank name + current date.
+2.	Account ID- first 3 letters of holder name+current date.
+3.	Transaction ID- “TXN”+ bank ID +AccountID+current date.
+flow:-
+•	Create a Bank as main class.
+•	Bank will have staff & holder accounts class with username and password.
+•	Staff will initially create account and immediately login and have create holder account functionality.
+•	Once holder created account and logged in .he will deposit money .
+•	Once deposited he can withdraw or transfer to different accounts.
+•	Charges will be applied according to transaction type.
+•	Staff can revert any transaction.
+•	Staff can update delete account.
+
+
+Process:-
+View will display option it will ask controller to check the availability of option and the controller will check the availability of option in modal if available returns it else it will be returning any error.
+
+
+Date:-17-12-2025
+Changes made:-Added custom validation for bank name and country name,passwords

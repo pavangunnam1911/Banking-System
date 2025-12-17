@@ -49,19 +49,19 @@ public class BankSystem
         try
         {
             cs.EnterBankName.Write();
-            string name = InputCheck.ReadString();
+            string name = InputCheck.ValidateBankName();
 
             cs.EnterBankCountry.Write();
-            string country = InputCheck.ReadString();
+            string country = InputCheck.ValidateCountry();
 
             cs.EnterBankAddress.Write();
             string address = InputCheck.ReadString();
 
             cs.EnterRTGSother.Write();
-            string RTGSother = InputCheck.ReadString();
+            string RTGSother = InputCheck.ReadRTGSandIMPS();
 
             cs.EnterIMPSother.Write();
-            string IMPSother = InputCheck.ReadString();
+            string IMPSother = InputCheck.ReadRTGSandIMPS();
 
 
             Bank newBank = new Bank(name, country, address, RTGSother, IMPSother);

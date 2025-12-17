@@ -10,7 +10,7 @@
 
         public Transaction(string bankId, string accountId, string sender, string receiver, decimal amount, string type)
         {
-            TransactionId = "TXN" + bankId + accountId + DateTime.Now.ToString("ddMMyyyy");
+            TransactionId = "TXN" + bankId + accountId + DateTime.Now.ToString("ddMMyyyyHHmmss");
             Sender = sender;
             Receiver = receiver;
             Amount = amount;

@@ -27,7 +27,7 @@ namespace Banking_System.Controller
                 cs.EnterUsername.Write();
                 string staffUsername = InputCheck.ReadString("");
                 cs.EnterPassword.Write();
-                string staffPassword = InputCheck.ReadString("");
+                string staffPassword = InputCheck.ValidatePassword("");
                 bankservice.CreateStaff(staffUsername, staffPassword);
                 StaffActions(staffUsername);
             }
@@ -73,7 +73,7 @@ namespace Banking_System.Controller
                 cs.EnterUsername.Write();
                 string HolderUsername = InputCheck.ReadString("");
                 cs.EnterPassword.Write();
-                string HolderPassword = InputCheck.ReadString("");
+                string HolderPassword = InputCheck.ValidatePassword("");
                 bankservice.CreateAccountHolder(HolderBankname, HolderUsername, HolderPassword);
             }
             catch (Exception ex)
