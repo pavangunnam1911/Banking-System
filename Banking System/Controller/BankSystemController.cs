@@ -2,7 +2,7 @@
 using Banking_System.Controller;
 using Banking_System.View;
 
-public class BankSystem
+public class BankSystemController
 {
     private Dictionary<string, Bank> AllBanks = new Dictionary<string, Bank>();
 

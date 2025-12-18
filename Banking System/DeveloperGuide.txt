@@ -1,0 +1,284 @@
+﻿Developer Guide:Console Bank Application using C#
+
+1.Introduction and Overview
+
+1.1 Purpose
+The main goal of a console bank application is to provide users with a secure, 
+text-based interface to manage their personal finances effectively.
+
+1.2 Key Features
+
+1.2.1 Bank Management
+a)Create Bank
+b)Choose Bank
+
+1.2.2 Staff
+a)Create Account Holder
+b)Update Credentials of Account Holder
+c)Delete Account Holder
+d)Add Currency Codes with Exchange rates
+e)View Transactions of Users
+f)Revert the Transfer Transactions 
+
+1.2.3 Account Holder
+a)Deposit Amount in any Currency
+b)Withdraw Amount only in INR
+c)Transfer Amount only in INR
+d)View Transactions
+e)View Balance
+
+1.3 System Overview
+
+The application is structured around a central management system that allows administrators 
+to define the banking environment and manage user access and transactions. At its core, the 
+system facilitates the creation and selection of different banks, for multi-bank operations.
+Initially we must create a bank.
+
+1.3.1 Bank Management
+a)Bank Creation
+Start with choosing the choices between 1 to 3 ,where Entering 1 leads to bank creation where
+we Must fill the details like Bank Name,Country,Address,RTGS,IMPS values To ensure data integrity, 
+we have implemented specific field validations for Bank Name, Country, Address, RTGS, and IMPS values. 
+Both Bank Name and Country must be purely alphabetic and at least 3 characters long. 
+RTGS and IMPS values are restricted to numeric input only, within a range of 0 to 100.Press 2 to select a bank.
+To select bank one must enter bank ID (Combination of first 3 characters of Bank Name and date of bank created)
+One can view available banks by Entering 3.
+
+b)Staff Management:
+Administrative users (staff) have robust control over the system. Key features include the 
+ability to create, update, and delete user accounts (account holders) by Entering 1,2,3 and to "Add Currency 
+Codes with Exchange rates press 4," which enables the system to handle multiple currencies,to view transactions
+staff must enter the username of Account holder they can revert the transactions of type transfer by transaction ID
+username should atleast be 3 characters long and password had a validation to be atleast of length 8 and must contain 
+1 upper,lower,numeric to enhance password protection.
+
+c)Account Holder Functionality:
+Account holders interact with a more streamlined set of features focused on personal finance management. 
+They can deposit funds in any supported currency by Entering 1 and entering currency code and amount to be deposited, 
+leveraging the exchange rates set by the staff. However, a significant operational constraint is that all withdrawals 
+and transfers must be conducted exclusively in Indian Rupees (INR) by Entering 4 and just entering the username and 
+amount with transaction type by Entering 1 for IMPS and 2 for RTGS and charges apply based on bank where the default charges
+for Same Bank's IMPS=5 & RTGS=0 and for different banks their respective charges were applied, simplifying the application's 
+transaction logic while still accommodating multi-currency deposits. Users can also monitor their finances through features 
+allowing them to view their transaction history by Entering 4 and current balance by Entering 5.
+
+d)Console Application Interface:
+As a console application, the system will rely on text-based menus and input prompts. It will manage data by storing in Dictionaries by 
+to maintaining bank records, staff credentials, account holder details, currency exchange rates, and transaction logs across sessions, 
+providing a fully functional, and console-based, banking simulation.
+
+2.Setup and Configuration
+2.1 Prerequisties
+a)CodeEditor: VisualStudio 2022 or later.
+b)Latest .NET SDK.
+c)Source Control: Git.
+d)Fundamental and Advanced Knowledge on C# programming language.
+
+2.2 Project Structure
+In this project I have followed MVC architecture where
+2.2.1 Models:-This contains data models and business logic
+a)Bank.
+b)Account.
+c)Transaction.
+d)BankServices with bussiness logic.
+
+2.2.2 View :This contains console diplayed text's
+a)It contains constant strings.
+b)an extension static method to use Console.WriteLine("").
+c)User Choices to be displayed on console.
+
+2.2.3 Controller :This is a bridge between view and model
+a)It transfer the request and responses between other two layers.
+
+
+
+3. Code Walkthrough
+3.1 Main Flow - Start Method
+
+The Start method in the BankSystem class is the main entry point of the application. 
+It begins by displaying a welcome message to the user using the DisplayChoices.
+WelcomeBank() method. The user is then given options to choose one of three options:
+
+Create a new bank (Option 1)
+
+Choose an existing bank (Option 2)
+
+View all banks (Option 3)
+
+The user inputs their choice, and the program handles each option accordingly. 
+If the user enters an invalid choice, they are informed to select a valid option via 
+ConstantStrings.ValidChoice. After the operation completes, the user is asked if they want 
+to return to the main menu. If the answer is "Y" (Yes), the loop continues; 
+otherwise, the program exits.
+
+3.2 Bank Management – Create a New Bank
+
+If the user selects Option 1 to create a new bank, the CreateNewBank() method is invoked. 
+
+Here's how the method works:
+
+The user must enter the bank name, country, address, and transaction charges (RTGS and IMPS). 
+This is done via the ConstantStrings like EnterBankName, EnterBankCountry, etc.
+
+Input Validation:
+
+The InputCheck class ensures that the inputs meet specific criteria. 
+For example, the bank name and country must be alphabetic and at least 3 characters long. 
+RTGS and IMPS values are validated to ensure they are numeric and between 0 and 100.
+
+Create Bank:
+
+A new Bank object is created using the provided details. The BankId is generated using 
+the first 3 characters of the bank name and the creation date.
+
+Store the Bank:
+
+The newly created bank is added to the AllBanks dictionary using its BankId as the key.
+
+Post-Creation:
+
+After the bank is created, a confirmation message is displayed, showing the bank name 
+and its unique BankId. Then, the BankUsers class is invoked to allow the user to either 
+manage staff or account holders for the bank.
+
+3.3 Choosing an Existing Bank
+
+If the user selects Option 2 to choose an existing bank, the ChooseBank() method is executed:
+
+
+The user is requested to enter a bank ID. The ID is a combination of the first 3 characters 
+of the bank name and the date it was created.
+
+Bank Selection:
+
+The program checks if the entered BankId exists in the AllBanks dictionary. If it does, the 
+bank is selected, and the user is directed to the BankUsers class to manage either staff or 
+account holder operations.
+
+Invalid Bank ID:
+
+If the BankId is not found, the user is informed that the bank does not exist using ConstantStrings.BanknotFound.
+
+3.4 Viewing All Banks
+
+If the user selects Option 3 to view all available banks, the ShowBanks() method is invoked:
+
+Check if Banks Exist:
+
+The program checks if there are any banks in the AllBanks dictionary.
+
+Display Banks:
+
+If banks exist, their details are displayed, including the BankId, BankName, and BankCountry. 
+This is done in a loop that iterates through the dictionary values.
+
+No Banks Found:
+
+If no banks are available, the user is notified with the message ConstantStrings.NoBankData.
+
+3.5 Staff Management
+
+Staff members have administrative privileges to manage account holders and system settings. 
+The BankUsers class is responsible for handling staff operations. Here are the key features:
+
+Create Account Holder:
+
+The staff can create an account holder by entering their username and password. The password 
+is validated to ensure it meets security criteria (at least 8 characters long, containing uppercase, 
+lowercase, and digits).
+
+Update Account Holder:
+
+The staff can update the username of an existing account holder. This is handled by the 
+bankservice.UpdateAccount() method.
+
+Delete Account Holder:
+
+Staff members can delete an account holder's account by entering the username, which triggers 
+the bankservice.DeleteAccount() method.
+
+Add Currency:
+
+Staff can add new currency codes with exchange rates using the bankservice.AddCurrency() method. 
+The currency exchange rates are then applied for deposits in foreign currencies.
+
+View Transactions:
+
+Staff can view transactions made by a specific account holder by entering their username. 
+This displays all transactions associated with the user.
+
+Revert Transaction:
+
+Staff can revert transfer transactions if necessary. This is done by entering the transaction ID. 
+The bankservice.RevertTransaction() method ensures that only transfer transactions can be reverted.
+
+3.6 Account Holder Management
+
+Account holders have a simplified interface focused on managing their personal finances. 
+The HolderActions() method is responsible for guiding the account holder through the following options:
+
+Deposit Funds:
+
+Account holders can deposit funds in any supported currency. The user is asked to enter the currency 
+code and amount, and the deposit is processed by the bankservice.Deposit() method. The amount is converted 
+to INR using the exchange rate.
+
+Withdraw Funds:
+
+Account holders can withdraw funds only in INR. The withdrawal amount is deducted from the account balance
+via the bankservice.Withdraw() method.
+
+Transfer Funds:
+
+Account holders can transfer funds in INR to other account holders. The transaction type (IMPS or RTGS) is 
+selected, and the transfer amount is processed by the bankservice.Transfer() method. Transaction charges are 
+applied based on whether the transfer is within the same bank or to a different bank.
+
+View Transactions:
+
+Account holders can view their transaction history by entering their username. This displays a list of all 
+transactions for the user.
+
+View Balance:
+
+Account holders can view their current balance, which is displayed by the bankservice.ViewBalance() method.
+
+
+4. Data Management and Storage
+
+The application uses Dictionaries to store the following data:
+
+a)Banks: A dictionary that maps each bank's unique BankId to the corresponding Bank object.
+
+b)Staff: A dictionary that stores staff credentials (username and password) for each bank.
+
+c)Account Holders: A dictionary for each bank to store account holder details (username and account).
+
+d)Currency Exchange Rates: Each bank maintains its own set of currency exchange rates for foreign currencies.
+
+The use of dictionaries ensures that data is easily accessible, and the structure allows for efficient lookups and updates.
+
+5. User Interface and Console Interaction
+
+The console application interface is text-based, using a series of menus to guide users through various operations. 
+The DisplayChoices class is responsible for displaying these choices, and the ConstantStrings class contains the 
+actual text strings.
+
+Each interaction in the application is driven by user input, and the program reacts accordingly by executing the 
+corresponding method in the BankUsers, BankSystem, or BankService class.
+
+For example:
+
+When the user enters "1" to create a new bank, the program prompts for the bank's name, country, address, 
+and transaction rates.After the bank is created, the program directs the user to either manage staff or account holders.
+
+6. Conclusion
+
+This console bank application provides a simple yet functional simulation of a banking environment. It follows 
+the MVC (Model-View-Controller) architecture, ensuring a clear separation of concerns between the data models, 
+user interface, and business logic. By using Dictionaries to store data and providing a streamlined text-based 
+interface, the system effectively allows users to manage banks, accounts, staff, and transactions.
+
+Key features such as input validation, secure password handling, and currency exchange rates are implemented 
+to ensure the system is robust and secure. Through this system, both administrative users (staff) and regular 
+account holders can efficiently manage their banking operations in a straightforward console environment.

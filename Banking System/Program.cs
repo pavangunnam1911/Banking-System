@@ -2,7 +2,7 @@
 {
     public static void Main(string[] args)
     {
-        BankSystem system = new BankSystem();
+        BankSystemController system = new BankSystemController();
         system.Start();  
     }
 }

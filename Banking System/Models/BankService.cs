@@ -21,10 +21,10 @@ namespace Banking_System.Models
         {
             this.bank = bank;
             this.allBanks = allBanks;
-            SameBankRTGS = bank.sameBankRTGS;
-            SameBankIMPS = bank.sameBankIMPS;
-            OtherBankRTGS = bank.otherBankRTGS;
-            OtherBankIMPS = bank.otherBankIMPS;
+            SameBankRTGS = bank.SameBankRTGS;
+            SameBankIMPS = bank.SameBankIMPS;
+            OtherBankRTGS = bank.OtherBankRTGS;
+            OtherBankIMPS = bank.OtherBankIMPS;
         }
 
 
@@ -168,19 +168,19 @@ namespace Banking_System.Models
             {
                 case "1":
                     SameBankIMPS = InputCheck.ReadDecimal("Enter new charge: ");
-                    bank.sameBankIMPS = SameBankIMPS;
+                    bank.SameBankIMPS = SameBankIMPS;
                     break;
                 case "2":
                     SameBankRTGS = InputCheck.ReadDecimal("Enter new charge: ");
-                    bank.sameBankRTGS = SameBankRTGS;
+                    bank.SameBankRTGS = SameBankRTGS;
                     break;
                 case "3":
                     OtherBankIMPS = InputCheck.ReadDecimal("Enter new charge: ");
-                    bank.otherBankIMPS = OtherBankIMPS;
+                    bank.OtherBankIMPS = OtherBankIMPS;
                     break;
                 case "4":
                     OtherBankRTGS = InputCheck.ReadDecimal("Enter new charge: ");
-                    bank.otherBankRTGS = OtherBankRTGS;
+                    bank.OtherBankRTGS = OtherBankRTGS;
                     break;
                 default:
                     cs.ValidChoice.Write();

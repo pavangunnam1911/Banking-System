@@ -7,10 +7,10 @@ namespace Banks
         public string BankId { get; init; } 
         public string BankCountry { get; set; }
         public string BankAddress {  get; set; }
-        public decimal otherBankRTGS { get; set; }
-        public decimal otherBankIMPS { get; set; }
-        public decimal sameBankRTGS { get; set; }
-        public decimal sameBankIMPS { get; set; }
+        public decimal OtherBankRTGS { get; set; }
+        public decimal OtherBankIMPS { get; set; }
+        public decimal SameBankRTGS { get; set; }
+        public decimal SameBankIMPS { get; set; }
         public Dictionary<string, Account> AccountHolders { get; set; }
         public Dictionary<string, string> Staff { get; set; }
         public Dictionary<string, decimal> CurrencyRates { get; set; }
@@ -21,13 +21,15 @@ namespace Banks
             BankId = bankName.Substring(0, 3).ToUpper() + DateTime.Now.ToString("ddMMyyyy");
             BankCountry = bankCountry;
             BankAddress = bankAddress;
-            otherBankRTGS = decimal.Parse(RTGSother);
-            otherBankIMPS = decimal.Parse(IMPSother);
-            sameBankRTGS = RTGSsame;
-            sameBankIMPS = IMPSsame;
+            OtherBankRTGS = decimal.Parse(RTGSother);
+            OtherBankIMPS = decimal.Parse(IMPSother);
+            SameBankRTGS = RTGSsame;
+            SameBankIMPS = IMPSsame;
 
             AccountHolders = new Dictionary<string, Account>();
+
             Staff = new Dictionary<string, string>();
+
             CurrencyRates = new Dictionary<string, decimal>() { { "INR", 1 } };
 
         }
